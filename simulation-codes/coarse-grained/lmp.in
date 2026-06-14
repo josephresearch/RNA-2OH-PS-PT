@@ -1,0 +1,74 @@
+variable kappa equal 1
+variable myTemp equal 0.8
+
+units lj
+dimension 3
+atom_style full
+boundary p p p
+
+
+read_data config_kappa_1.data
+
+log log_T${myTemp}_k${kappa}.lammps
+
+# Potentials
+
+## Bonded
+bond_style harmonic
+bond_coeff 1 10 1
+
+
+
+## LJ type of attraction for  A-B interactions
+pair_style lj/cut 2.5
+#* 3 parameters
+# 1.K(energy/d^2)
+# 2.R_0
+# 3.epsilon
+# 4.distance
+pair_coeff 1 1 1 1 1.12246
+pair_coeff 2 2 1 1 1.12246
+pair_coeff 1 2 1 1 2.5
+# pair_coeff * * 1 1 2.5
+pair_modify shift yes
+
+
+#! Angle potential k(1+cos)
+angle_style cosine
+angle_coeff 1 ${kappa}
+
+
+timestep 0.005
+
+
+# neighbour list settings
+neighbor  1.0 bin
+
+# timestep and computational parameters
+comm_style      tiled
+
+# build lists every 10 steps
+neigh_modify    every 20 delay 0
+
+
+# timer off timeout 00:20:00 every 1000
+fix      fxnve  all nve
+fix      fxlange all langevin ${myTemp} ${myTemp} 0.1 1530917
+fix      fxbal  all balance 1000 1.05 rcb
+
+
+
+
+restart      2000000 restart
+
+dump            1 all custom 10000 ljtest_T${myTemp}_k${kappa}.lammpstrj id mol type xu yu zu
+dump_modify   1 sort id
+
+
+thermo        1000
+thermo_style  custom step pe epair ebond eangle temp density
+thermo_modify flush yes
+
+
+
+run 120000000
