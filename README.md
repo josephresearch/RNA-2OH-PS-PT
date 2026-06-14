@@ -1,6 +1,6 @@
 
 
-Simulation data and code for **Gable M. Wadsworth\*, Dilimulati Aierken\*, George M. Thurston, Jerelle A. Joseph#, Priya R. Banerjee#, The Critical Role of the 2’-OH group in Phase Separation and Percolation Transitions of RNA, (2026)**
+Simulation data and code for **Gable M. Wadsworth\*, Dilimulati Aierken\*, George M. Thurston, Jerelle A. Joseph#, Priya R. Banerjee#, The Role of the 2’-OH group in Phase Separation and Percolation Transitions of RNA, (2026)**
 
 
 
